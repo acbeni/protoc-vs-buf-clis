@@ -1,9 +1,9 @@
-out_folder:=profile
+out_folder:="generated"
 
 .PHONY: clean
 clean:
 	rm -rf $(out_folder)
-	mkdir $(out_folder)
+	mkdir -p $(out_folder)
 
 .PHONY: install-proto-dep
 install-proto-dep:
@@ -19,10 +19,12 @@ generate-protoc: clean
 	--go_opt=paths=source_relative \
 	--go-grpc_out=$(out_folder) \
 	--go-grpc_opt=paths=source_relative \
-	-I . profile.proto
+	-I . api/profile/v1/profile.proto
 
+.PHONY: install-buf
+install-buf:
+	brew install buf
 
-# .PHONY: install-buf
-# install-buf:
-# 	brew install buf
-
+.PHONY: generate-buf
+generate-buf:
+	buf generate

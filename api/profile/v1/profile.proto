@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.profile.v1;
+
+option go_package = "api/profile/v1";
+
+message GetProfileRequest { string id = 1; }
+
+message GetProfileResponse {
+  string name = 1;
+  string bio = 2;
+  string avatar = 3;
+}
+
+service ProfileService {
+  rpc getProfile(GetProfileRequest) returns (GetProfileResponse);
+}

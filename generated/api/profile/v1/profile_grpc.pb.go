@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.21.12
-// source: profile.proto
+// source: api/profile/v1/profile.proto
 
-package profile
+package v1
 
 import (
 	context "context"
@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ProfileService_GetProfile_FullMethodName = "/api.profile.ProfileService/getProfile"
+	ProfileService_GetProfile_FullMethodName = "/api.profile.v1.ProfileService/getProfile"
 )
 
 // ProfileServiceClient is the client API for ProfileService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProfileServiceClient interface {
-	GetProfile(ctx context.Context, in *ProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+	GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*GetProfileResponse, error)
 }
 
 type profileServiceClient struct {
@@ -37,8 +37,8 @@ func NewProfileServiceClient(cc grpc.ClientConnInterface) ProfileServiceClient {
 	return &profileServiceClient{cc}
 }
 
-func (c *profileServiceClient) GetProfile(ctx context.Context, in *ProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
-	out := new(ProfileResponse)
+func (c *profileServiceClient) GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*GetProfileResponse, error) {
+	out := new(GetProfileResponse)
 	err := c.cc.Invoke(ctx, ProfileService_GetProfile_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (c *profileServiceClient) GetProfile(ctx context.Context, in *ProfileReques
 // All implementations must embed UnimplementedProfileServiceServer
 // for forward compatibility
 type ProfileServiceServer interface {
-	GetProfile(context.Context, *ProfileRequest) (*ProfileResponse, error)
+	GetProfile(context.Context, *GetProfileRequest) (*GetProfileResponse, error)
 	mustEmbedUnimplementedProfileServiceServer()
 }
 
@@ -58,7 +58,7 @@ type ProfileServiceServer interface {
 type UnimplementedProfileServiceServer struct {
 }
 
-func (UnimplementedProfileServiceServer) GetProfile(context.Context, *ProfileRequest) (*ProfileResponse, error) {
+func (UnimplementedProfileServiceServer) GetProfile(context.Context, *GetProfileRequest) (*GetProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProfile not implemented")
 }
 func (UnimplementedProfileServiceServer) mustEmbedUnimplementedProfileServiceServer() {}
@@ -75,7 +75,7 @@ func RegisterProfileServiceServer(s grpc.ServiceRegistrar, srv ProfileServiceSer
 }
 
 func _ProfileService_GetProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProfileRequest)
+	in := new(GetProfileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func _ProfileService_GetProfile_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: ProfileService_GetProfile_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).GetProfile(ctx, req.(*ProfileRequest))
+		return srv.(ProfileServiceServer).GetProfile(ctx, req.(*GetProfileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -96,7 +96,7 @@ func _ProfileService_GetProfile_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProfileService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.profile.ProfileService",
+	ServiceName: "api.profile.v1.ProfileService",
 	HandlerType: (*ProfileServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -105,5 +105,5 @@ var ProfileService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "profile.proto",
+	Metadata: "api/profile/v1/profile.proto",
 }
